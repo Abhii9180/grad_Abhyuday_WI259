@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Loan Calculator</title>
+
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(to right, #dfe9f3, #ffffff);
+            text-align: center;
+            padding: 40px;
+        }
+
+        h1 {
+            text-decoration: underline;
+        }
+
+        .container {
+            width: 400px;
+            margin: auto;
+            padding: 25px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px gray;
+        }
+
+        input, select {
+            width: 90%;
+            padding: 8px;
+            margin: 8px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border-radius: 20px;
+            border: none;
+            background: black;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: darkblue;
+        }
+
+        #result {
+            font-weight: bold;
+            margin-top: 15px;
+            color: green;
+        } 
+        #loanType, #interest {
+            width: 95%;
+        }
+        
+    </style>
+</head>
+
+<body>
+
+<h1>LOAN CALCULATOR</h1>
+
+<div class="container">
+
+    <input type="text" id="applicant" placeholder="Applicant Name">
+
+    <select id="loanType">
+        <option value="">Select Loan Type</option>
+        <option value="Home">Home</option>
+        <option value="Car">Car</option>
+        <option value="Personal">Personal</option>
+    </select>
+
+    <select id="interest">
+        <option value="">Select Interest Rate</option>
+        <option value="9">9%</option>
+        <option value="12">12%</option>
+        <option value="15">15%</option>
+    </select>
+
+    <input type="number" id="amount" placeholder="Loan Amount">
+
+    <input type="number" id="years" placeholder="Duration in Years ">
+
+    <br><br>
+
+    <button onclick="calculateEMI()">CALCULATE EMI</button>
+
+    <p id="result"></p>
+
+</div>
+
+<script>
+
+    function calculateEMI() {
+
+        var name = document.getElementById("applicant").value;
+        var type = document.getElementById("loanType").value;
+        var rate = document.getElementById("interest").value;
+        var amount = document.getElementById("amount").value;
+        var years = document.getElementById("years").value;
+
+        
+        if (name == "") {
+            alert("Applicant name is required!");
+            return;
+        }
+
+        if (type == "") {
+            alert("Please select loan type!");
+            return;
+        }
+
+        if (rate == "") {
+            alert("Please select interest rate!");
+            return;
+        }
+
+        if (amount <= 0) {
+            alert("Enter valid loan amount!");
+            return;
+        }
+
+        if (years <= 0) {
+            alert("Enter valid duration!");
+            return;
+        }
+
+        if (type == "Home" && amount < 500000) {
+            alert("Home loan must be greater than 5L");
+            return;
+        }
+
+        if (type == "Car" && amount < 100000) {
+            alert("Car loan must be greater than 1L");
+            return;
+        }
+
+        if (type == "Personal" && amount < 10000) {
+            alert("Personal loan must be greater than 10K");
+            return;
+        }
+      
+
+        /*
+                        The basic EMI calculation formula is as follows:
+
+                        E = P x R x (1+r)^n/((1+r)^N – 1, where 
+
+                        E = Equated Monthly Instalment
+
+                        ‘P’ stands for principal amount
+
+                        ‘R’ denotes applicable rate of interest
+
+                        ‘N’ stands for the loan term or tenure
+
+
+        */
+       
+        var P = parseFloat(amount);
+        var R = parseFloat(rate) / 12 / 100;
+        var N = years * 12;
+
+        var EMI = (P * R * Math.pow((1 + R), N)) / 
+                  (Math.pow((1 + R), N) - 1);
+
+        EMI = EMI.toFixed(2);
+
+        document.getElementById("result").innerHTML =
+            "Hello " + name + "<br> Your EMI is ₹ " + EMI;
+
+       
+        console.log("Browser Info: " + navigator.userAgent);
+        console.log("Screen Width: " + screen.width);
+        console.log("Current URL: " + location.href);
+
+    }
+
+</script>
+
+</body>
+</html>

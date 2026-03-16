@@ -1,0 +1,10 @@
+{
+  "routes": {
+    "/": {},
+    "/add-student": {},
+    "/failure": {},
+    "/login": {},
+    "/students": {},
+    "/update-student": {}
+  }
+}

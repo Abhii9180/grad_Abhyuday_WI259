@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Our Bank - SPA</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        header {
+            background: yellow;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            display: flex;
+            height: 450px;
+        }
+
+        nav {
+            width: 200px;
+            background: pink;
+            padding-top: 20px;
+        }
+
+        nav div {
+            padding: 12px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        nav div:hover {
+            background: lightgray;
+        }
+
+        #content {
+            flex: 1;
+            background: #333;
+            color: white;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        input, select {
+            padding: 6px;
+            margin: 6px 0;
+        }
+
+        button {
+            padding: 6px 12px;
+            margin-top: 8px;
+            cursor: pointer;
+        }
+
+        footer {
+            background: yellow;
+            text-align: center;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>OUR BANK</h1>
+    <p>Banking at your Doorstep</p>
+</header>
+
+<div class="container">
+
+    <nav>
+        <div onclick="loadHome()">HOME</div>
+        <div onclick="loadAbout()">ABOUT US</div>
+        <div onclick="loadServices()">SERVICES</div>
+        <div onclick="loadContact()">CONTACT US</div>
+    </nav>
+
+    <div id="content">
+        Welcome to Our Bank
+    </div>
+
+</div>
+
+<footer>
+    www.ourbank.com <br>
+    @Copyright. All rights reserved.
+</footer>
+
+<script>
+
+var contentArea = document.getElementById("content");
+
+
+
+function loadHome() {
+    contentArea.innerHTML =
+        "<h2>Home</h2><p>Welcome to Our Bank Website.</p>";
+    history.pushState(null, null, "#home");
+}
+
+
+
+function loadAbout() {
+    contentArea.innerHTML =
+        "<h2>About Us</h2><p>We provide secure and modern banking services.</p>";
+    history.pushState(null, null, "#about");
+}
+
+
+
+function loadContact() {
+    contentArea.innerHTML =
+        "<h2>Contact Us</h2><p>Email: support@ourbank.com</p><p>Phone: 9999999999</p>";
+    history.pushState(null, null, "#contact");
+}
+
+
+
+function loadServices() {
+
+    contentArea.innerHTML = `
+        <h2>Our Services</h2>
+
+        <button onclick="loadLoan()">Loan</button>
+        <button onclick="loadDeposit()">Deposit</button>
+        <button onclick="loadAccount()">Account Opening</button>
+
+        <div id="serviceContent" style="margin-top:20px;"></div>
+    `;
+
+    history.pushState(null, null, "#services");
+}
+
+
+
+function loadLoan() {
+
+    document.getElementById("serviceContent").innerHTML = `
+        <h3>Loan Application</h3>
+
+        Name:<br>
+        <input type="text" id="loanName"><br>
+
+        Loan Amount:<br>
+        <input type="number" id="loanAmount"><br>
+
+        Duration (Years):<br>
+        <input type="number" id="loanYears"><br>
+
+        <button onclick="calculateLoan()">Calculate EMI</button>
+
+        <p id="loanResult"></p>
+    `;
+}
+
+function calculateLoan() {
+
+    var name = document.getElementById("loanName").value;
+    var amount = document.getElementById("loanAmount").value;
+    var years = document.getElementById("loanYears").value;
+
+    if (name === "" || amount <= 0 || years <= 0) {
+        alert("All loan fields are required!");
+        return;
+    }
+
+    var P = parseFloat(amount);
+    var R = 12 / 12 / 100;  
+    var N = years * 12;
+
+    var EMI = (P * R * Math.pow((1 + R), N)) /
+              (Math.pow((1 + R), N) - 1);
+
+    EMI = EMI.toFixed(2);
+
+    document.getElementById("loanResult").innerHTML =
+        "Hello " + name + ", Your EMI is ₹ " + EMI;
+}
+
+
+
+function loadDeposit() {
+
+    document.getElementById("serviceContent").innerHTML = `
+        <h3>Deposit Service</h3>
+
+        Name:<br>
+        <input type="text" id="depName"><br>
+
+        Deposit Amount:<br>
+        <input type="number" id="depAmount"><br>
+
+        Duration (Years):<br>
+        <input type="number" id="depYears"><br>
+
+        <button onclick="calculateDeposit()">Calculate Maturity</button>
+
+        <p id="depResult"></p>
+    `;
+}
+
+function calculateDeposit() {
+
+    var name = document.getElementById("depName").value;
+    var amount = document.getElementById("depAmount").value;
+    var years = document.getElementById("depYears").value;
+
+    if (name === "" || amount <= 0 || years <= 0) {
+        alert("All deposit fields are required!");
+        return;
+    }
+
+    var P = parseFloat(amount);
+    var R = 8; 
+    var T = parseFloat(years);
+
+    var SI = (P * R * T) / 100;
+    var total = P + SI;
+
+    document.getElementById("depResult").innerHTML =
+        "Hello " + name + ", Maturity Amount = ₹ " + total;
+}
+
+
+
+function loadAccount() {
+
+    document.getElementById("serviceContent").innerHTML = `
+        <h3>Account Opening</h3>
+
+        Name:<br>
+        <input type="text" id="accName"><br>
+
+        Email:<br>
+        <input type="email" id="accEmail"><br>
+
+        Initial Deposit:<br>
+        <input type="number" id="accAmount"><br>
+
+        <button onclick="openAccount()">Submit</button>
+
+        <p id="accResult"></p>
+    `;
+}
+
+function openAccount() {
+
+    var name = document.getElementById("accName").value;
+    var email = document.getElementById("accEmail").value;
+    var amount = document.getElementById("accAmount").value;
+
+    if (name === "") {
+        alert("Name is required!");
+        return;
+    }
+
+    if (!email.includes("@")) {
+        alert("Enter valid email!");
+        return;
+    }
+
+    if (amount < 1000) {
+        alert("Minimum opening balance is 1000!");
+        return;
+    }
+
+    document.getElementById("accResult").innerHTML =
+        "Account successfully created for " + name;
+}
+
+
+
+console.log("Browser Info:", navigator.userAgent);
+console.log("Screen Width:", screen.width);
+console.log("Current URL:", location.href);
+
+</script>
+
+</body>
+</html>
